@@ -1,3 +1,7 @@
+The premise of the project is a wellness app that tracks key features of your days activities.
+
+The key features include :
+
 A Fitness Tracker
 
 ---
