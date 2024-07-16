@@ -1,9 +1,8 @@
 import LandingPage from "@/components/sections/LandingPage";
-import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div>
+    <div className="px-10 pt-16">
       <LandingPage />
     </div>
   );
