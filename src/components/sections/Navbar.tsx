@@ -69,11 +69,14 @@ const Navbar = (props: Props) => {
           ))}
         </div>
         <div className=" flex gap-16 items-center">
-          <Link href={"/"} className="text-primary">
-            Sign in
+          <Link
+            href={"/login"}
+            className="text-primary hover:underline underline-offset-8"
+          >
+            Login
           </Link>
           <Button asChild className="shadow-xl ">
-            <Link href={"/"}> Become a Member</Link>
+            <Link href={"/signup"}> Become a Member</Link>
           </Button>
           <ModeToggle />
         </div>
@@ -94,11 +97,20 @@ const Navbar = (props: Props) => {
               <Link
                 href={navLink.url}
                 key={index}
-                className="font-sans text-lg font-medium text-white mt-8 py-4 rounded-lg flex justify-center hover:bg-violet-400"
+                className="font-sans text-lg font-medium text-white mt-4 py-4 rounded-lg flex justify-center hover:bg-violet-400"
               >
                 {navLink.title}
               </Link>
             ))}{" "}
+            <Link
+              href={"/app/signin"}
+              className="font-medium text-white text-base  hover:underline underline-offset-8 px-2 mt-4 flex justify-center"
+            >
+              Login
+            </Link>
+            <Button asChild variant={"secondary"} className="shadow-xl ">
+              <Link href={"/"}> Become a Member</Link>
+            </Button>
             <div className="lg:hidden fixed top-2 flex justify-between w-full pr-4">
               <TiCancelOutline
                 fontSize="1.5em"
