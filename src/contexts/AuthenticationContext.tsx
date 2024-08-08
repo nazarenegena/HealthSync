@@ -19,8 +19,9 @@ import {
 
 // user data interface
 interface IUser {
-  firstname: string | null;
-  lastname: string | null;
+  firstname?: string | null;
+  lastname?: string | null;
+  name?: string | null;
   email: string | null;
   uid: string | null;
 }
@@ -47,6 +48,10 @@ export const AuthContextProvider = ({
     lastname: null,
   });
   const [loading, setLoading] = useState<Boolean>(true);
+  // login the user
+  const logIn = (email: string, password: string) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
 
   // sign up the user
   // change cloud firestore database  rules to true
@@ -64,11 +69,6 @@ export const AuthContextProvider = ({
       authProvider: "local",
       email,
     });
-  };
-
-  // login the user å
-  const logIn = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
   };
 
   // logout the user
@@ -91,10 +91,10 @@ export const AuthContextProvider = ({
           } else {
             querySnapshot.forEach((doc) => {
               const userData = doc.data();
+              console.log(userData, "the user data");
               setUser({
                 ...currentUser,
-                firstname: userData.firstname,
-                lastname: userData.lastname,
+                name: userData.name,
                 email: currentUser.email,
                 uid: currentUser.uid,
               });
@@ -119,3 +119,12 @@ export const AuthContextProvider = ({
     </AuthContext.Provider>
   );
 };
+
+// Custom hook to use the UserContext
+// export const useUserContext = () => {
+//   const context = useContext(AuthContext);
+//   if (!context) {
+//     throw new Error("useUserContext must be used within a UserContextProvider");
+//   }
+//   return context;
+// };

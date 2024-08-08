@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthenticationContext";
 
 // Define the IUserDetails interface
@@ -26,6 +27,7 @@ export default function SignupPage() {
   });
 
   const { signUp } = useAuth();
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,8 +36,6 @@ export default function SignupPage() {
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData, "the data");
-
     const userDetails: IUserDetails = {
       firstname: formData.firstname,
       lastname: formData.lastname,
@@ -43,6 +43,13 @@ export default function SignupPage() {
 
     try {
       await signUp(formData.email, formData.password, userDetails);
+      router.push("/login");
+      setFormData({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+      });
     } catch (error) {
       console.error("Error signing up:", error);
     }
@@ -86,7 +93,7 @@ export default function SignupPage() {
         onChange={handleInputChange}
         value={formData.password}
       />
-      <button type="submit">Sign Up</button>
+      <button>Sign Up</button>
       <button type="button">
         <Link href="/login">Log in</Link>
       </button>

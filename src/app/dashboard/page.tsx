@@ -1,4 +1,12 @@
-// `app/page.tsx` is the UI for the `/` URL
+"use client";
+
+import { useAuth } from "@/contexts/AuthenticationContext";
+
 export default function Dashboard() {
-  return <h1>Hello, Dashboard home page</h1>;
+  const { user } = useAuth();
+  console.log(user, "the first name");
+
+  return <h1>Welcome, {user.name}</h1>;
+
+  // return <h1>Welcome, {user?.firstname ? user.firstname : "Welcome here"}</h1>;
 }
