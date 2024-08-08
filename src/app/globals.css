@@ -58,4 +58,7 @@
     --chart-4: ;
     --chart-5: ;
   }
+    /* body {
+      @apply ;
+    } */
 }

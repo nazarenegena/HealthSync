@@ -1,102 +1,15 @@
-"use client";
+import SignupForm from "@/components/authSection/SignUpForm";
+import Image from "next/image";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthenticationContext";
-
-// Define the IUserDetails interface
-interface IUserDetails {
-  firstname: string;
-  lastname: string;
-}
-
-interface ISignUpFormState {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-}
+import SignUpImage from "@/assets/sign-up-form.svg";
 
 export default function SignupPage() {
-  const [formData, setFormData] = useState<ISignUpFormState>({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-  });
-
-  const { signUp } = useAuth();
-  const router = useRouter();
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const userDetails: IUserDetails = {
-      firstname: formData.firstname,
-      lastname: formData.lastname,
-    };
-
-    try {
-      await signUp(formData.email, formData.password, userDetails);
-      router.push("/login");
-      setFormData({
-        firstname: "",
-        lastname: "",
-        email: "",
-        password: "",
-      });
-    } catch (error) {
-      console.error("Error signing up:", error);
-    }
-  };
-
   return (
-    <form onSubmit={handleSignUp}>
-      <label htmlFor="firstname">First Name:</label>
-      <input
-        id="firstname"
-        name="firstname"
-        type="text"
-        required
-        onChange={handleInputChange}
-        value={formData.firstname}
-      />
-      <label htmlFor="lastname">Last Name:</label>
-      <input
-        id="lastname"
-        name="lastname"
-        type="text"
-        required
-        onChange={handleInputChange}
-        value={formData.lastname}
-      />
-      <label htmlFor="email">Email:</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        required
-        onChange={handleInputChange}
-        value={formData.email}
-      />
-      <label htmlFor="password">Password:</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        required
-        onChange={handleInputChange}
-        value={formData.password}
-      />
-      <button>Sign Up</button>
-      <button type="button">
-        <Link href="/login">Log in</Link>
-      </button>
-    </form>
+    <div className="grid grid-cols-2 h-screen">
+      <div className="bg-primary/30 flex justify-center">
+        <Image src={SignUpImage} alt="signup-image" width={600} height={500} />
+      </div>
+      <SignupForm />
+    </div>
   );
 }
