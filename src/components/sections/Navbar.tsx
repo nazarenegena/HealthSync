@@ -4,14 +4,9 @@ import { ModeToggle } from "../ModeToggle";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { FaRunning } from "react-icons/fa";
-import { IoSyncSharp } from "react-icons/io5";
-import fitnessApp from "../../assets/fitness-app.svg";
-import fitnessGym from "../../assets/fitness-gym.svg";
-import fitnessPlace from "../../assets/fitness-place.svg";
 import { TiCancelOutline } from "react-icons/ti";
 import { GiHamburgerMenu } from "react-icons/gi";
-import fitnessWatch from "../../assets/fitness-watch.svg";
+import runner from "../../assets/runner.svg";
 
 type Props = {};
 
@@ -49,20 +44,15 @@ const Navbar = (props: Props) => {
   ];
 
   return (
-    <div>
-      <div className="hidden lg:flex items-center justify-between">
+    <div className="px-10">
+      <div className="hidden lg:flex items-center justify-between ">
         <div className="flex items-center justify-between gap-20">
-          <Image
-            src={fitnessWatch}
-            alt="fitness_app_logo"
-            width={150}
-            height={150}
-          />
+          <Image src={runner} alt="fitness_app_logo" width={50} height={50} />
           {navLinks.map((navLink: ILink, index) => (
             <Link
               href={navLink.url}
               key={index}
-              className="font-sans text-lg font-medium text-foreground"
+              className="font-sans text-md font-medium text-neutral"
             >
               {navLink.title}
             </Link>
