@@ -17,7 +17,7 @@ const HeroSection = (props: Props) => {
       <div className="grid grid-cols-3 px-10">
         <div className="flex flex-col items-center justify-center ">
           <p className="text-6xl leading-relaxed tracking-wider font-medium text-neutral font-serif text-center">
-            Track your <span className="text-primary/85">Active</span> Lifestyle
+            Sync your <span className="text-primary/85">Active</span> Lifestyle
           </p>
           <p className="text-muted-foreground mt-5 text-center">
             {" "}

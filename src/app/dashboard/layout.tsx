@@ -1,4 +1,3 @@
-import { ModeToggle } from "@/components/ModeToggle";
 import Sidebar from "@/components/sections/Sidebar";
 
 export default function DashboardLayout({
@@ -9,9 +8,10 @@ export default function DashboardLayout({
   return (
     <section>
       {/* Include shared UI here e.g. a header or sidebar */}
-      <ModeToggle />
-      <Sidebar />
-      {children}
+      <section className="grid grid-cols-[20%_80%] h-screen">
+        <Sidebar />
+        {children}
+      </section>
     </section>
   );
 }
