@@ -47,7 +47,12 @@ const Navbar = (props: Props) => {
     <div className="px-10">
       <div className="hidden lg:flex items-center justify-between ">
         <div className="flex items-center justify-between gap-20">
-          <Image src={runner} alt="fitness_app_logo" width={50} height={50} />
+          <div className="flex items-center px-4">
+            <Link href="/" className="font-serif text-primary/90 flex">
+              Health <Image src={runner} alt="logo" width={20} height={20} />
+              Sync
+            </Link>
+          </div>
           {navLinks.map((navLink: ILink, index) => (
             <Link
               href={navLink.url}

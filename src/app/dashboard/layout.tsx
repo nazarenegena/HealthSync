@@ -1,3 +1,4 @@
+import DashboardNavbar from "@/components/sections/dashboardSection/DashboardNavbar";
 import Sidebar from "@/components/sections/Sidebar";
 
 export default function DashboardLayout({
@@ -10,7 +11,10 @@ export default function DashboardLayout({
       {/* Include shared UI here e.g. a header or sidebar */}
       <section className="grid grid-cols-[20%_80%] h-screen">
         <Sidebar />
-        {children}
+        <div className="flex flex-col">
+          <DashboardNavbar />
+          {children}
+        </div>
       </section>
     </section>
   );
