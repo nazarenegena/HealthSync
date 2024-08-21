@@ -4,6 +4,8 @@ import { ModeToggle } from "@/components/ModeToggle";
 import React from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { useAuth } from "@/contexts/AuthenticationContext";
+import Image from "next/image";
+import handwave from "@/assets/handwave.svg";
 
 type Props = {};
 
@@ -11,10 +13,19 @@ const DashboardNavbar = (props: Props) => {
   const { user } = useAuth();
   return (
     <div className=" relative flex justify-between pt-10 bg-muted/15 h-28 w-full px-10">
-      <p className="text-xl font-normal tracking-wider text-muted-foreground">
+      <div className="flex items-center justify-center">
         {" "}
-        Welcome <span className="font-semibold">{user.name}</span>
-      </p>
+        <p className="text-3xl font-normal tracking-wider text-muted-foreground w-full">
+          Hello there
+        </p>
+        <Image
+          src={handwave}
+          alt="handwave"
+          width={50}
+          height={50}
+          className="ml-4"
+        />
+      </div>
       <div className=" relative flex justify-end gap-10">
         <input
           type="text"

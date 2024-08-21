@@ -18,7 +18,7 @@ const Sidebar = (props: Props) => {
   const linkStyle =
     "h-12  rounded-md px-4 pt-3 hover:shadow-lg hover:bg-primary/30 my-7";
   return (
-    <div className="  relative">
+    <div className="relative">
       <div className="flex flex-col mt-10 mx-5">
         <div className="flex items-center px-4">
           <Link href="/" className="font-serif text-primary/90 flex">
