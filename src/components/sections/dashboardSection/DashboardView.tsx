@@ -10,6 +10,7 @@ import heart from "@/assets/heart.svg";
 import Card from "@/components/Card";
 import SimpleCard from "@/components/SimpleCard";
 import { RxDotsHorizontal } from "react-icons/rx";
+import CalenderView from "./CalenderView";
 
 type Props = {};
 
@@ -61,28 +62,34 @@ const DashboardView = (props: Props) => {
           </div>
         </div>
         <div className="bg-primary-foreground dark:bg-muted-foreground/10 rounded-md border border-muted-foreground/10 px-5 pt-5">
-          <div className="flex justify-between">
-            <p className="text-sm tracking-wider font-medium">Profile</p>
-            <RxDotsHorizontal />
-          </div>
-
-          <div className="cursor-pointer flex flex-col items-center mt-7">
-            <Image
-              src={profileImg}
-              alt="profile picture"
-              width={70}
-              height={70}
-              className="rounded-full aspect-square object-cover"
-            />
-            <div className="mt-2 text-center">
-              <p className="text-muted-foreground font-medium text-sm">
-                {user.name}
-              </p>
-              <p className="text-muted-foreground/80 font-normal text-xs">
-                {user.email}
-              </p>
+          {/* profile picture */}
+          <div>
+            <div className="flex justify-between">
+              <p className="text-sm tracking-wider font-medium">Profile</p>
+              <RxDotsHorizontal />
             </div>
-            <div className="flex justify-between gap-8 mt-10 border border-muted-foreground/10 w-full px-3 py-4 rounded-md">
+
+            <div className="cursor-pointer flex flex-col items-center mt-4">
+              <Image
+                src={profileImg}
+                alt="profile picture"
+                width={70}
+                height={70}
+                className="rounded-full aspect-square object-cover"
+              />
+              <div className="mt-2 text-center">
+                <p className="text-muted-foreground font-medium text-sm">
+                  {user.name}
+                </p>
+                <p className="text-muted-foreground/80 font-normal text-xs">
+                  {user.email}
+                </p>
+              </div>
+            </div>
+
+            {/* anthropometrics */}
+
+            <div className="flex justify-between gap-8 my-6 border border-muted-foreground/10 w-full px-3 py-4 rounded-md">
               <div>
                 <p className="text-sm font-medium">65kg</p>
                 <p className="text-sm text-muted-foreground/80 mt-1">Weight</p>
@@ -95,6 +102,27 @@ const DashboardView = (props: Props) => {
                 <p className="text-sm font-medium">25</p>
                 <p className="text-sm text-muted-foreground/80 mt-1">Age</p>
               </div>
+            </div>
+          </div>
+
+          {/* calender */}
+          <p className=" mt-2 text-sm tracking-wider font-medium">Calender</p>
+          <div className="flex flex-col justify-center items-center mt-2">
+            <CalenderView />
+          </div>
+
+          {/* scheduled */}
+          <div className="mt-4">
+            <p className=" mb-4 text-sm tracking-wider font-medium">
+              Scheduled
+            </p>
+            <div className=" border border-muted-foreground/25 px-5 py-3 rounded-md mt-3">
+              <p className="text-xs text-muted-foreground/80">Fitness</p>
+              <p className="mt-2 text-sm">Training Yoga Class</p>
+            </div>
+            <div className=" border border-muted-foreground/25 px-5 py-3 rounded-md mt-5">
+              <p className="text-xs text-muted-foreground/80">Cardio</p>
+              <p className="mt-2 text-sm">Training Swimming</p>
             </div>
           </div>
         </div>
