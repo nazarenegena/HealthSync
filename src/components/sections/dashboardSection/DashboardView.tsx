@@ -54,7 +54,7 @@ const DashboardView = (props: Props) => {
 
           <div className=" grid grid-cols-[45%_55%] mt-8">
             <Card title="Activity" margin="mr-6" height="h-56">
-              <p>The statistics</p>
+              <p className="text-red-500">The statistics</p>
             </Card>
             <Card title="Activity" height="h-56">
               <p>The new statistics</p>
