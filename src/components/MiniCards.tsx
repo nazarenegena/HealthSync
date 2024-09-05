@@ -11,11 +11,20 @@ type Props = {
 const MiniCards = ({ icon, metrics, title, margin }: Props) => {
   return (
     <div
-      className={`${margin} bg-primary-foreground dark:bg-muted-foreground/10 w-52 h-32 shadow-md rounded-sm`}
+      className={`${margin} bg-primary-foreground dark:bg-muted-foreground/10 w-52 h-24 shadow-md rounded-sm relative pl-10`}
     >
-      <Image src={icon} alt="icon" width={10} height={10} />
-      <p className="">{title}</p>
-      <p>{metrics}</p>
+      <Image
+        src={icon}
+        alt="icon"
+        width={40}
+        height={40}
+        className="absolute top-[-1.3rem]"
+      />
+      <div className="mt-6">
+        <p className="font-medium text-base">{metrics}</p>
+
+        <p className="mt-1 text-muted-foreground/75 text-sm">{title}</p>
+      </div>
     </div>
   );
 };
