@@ -1,7 +1,10 @@
 "use client";
 
+import React, { useState } from "react";
 import { TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowUp } from "react-icons/md";
 
 import {
   Card,
@@ -62,8 +65,35 @@ const monthDataWithPercentage = monthData.map((item) => ({
 
 console.log(monthDataWithPercentage, "the total");
 export function ActivityAreaChart() {
+  const [isDropdown, setIsDropdown] = useState(false);
+  const arrowStyle = "cursor-pointer text-primary font-bold";
   return (
-    <Card className="my-4">
+    <Card className="my-8">
+      <div className="flex justify-between m-4">
+        <CardDescription className="items-center pb-0">
+          Activity
+        </CardDescription>
+        <CardDescription className="items-center pb-0">
+          <div className="flex items-center justify-center">
+            <p className="text-muted-foreground/75 text-sm">Weekly</p>
+
+            {!isDropdown ? (
+              <MdKeyboardArrowDown
+                size={20}
+                className={`${arrowStyle} ml-2`}
+                onClick={() => setIsDropdown(true)}
+              />
+            ) : (
+              <MdKeyboardArrowUp
+                size={20}
+                className={`${arrowStyle} ml-2`}
+                onClick={() => setIsDropdown(false)}
+              />
+            )}
+          </div>
+        </CardDescription>
+      </div>
+
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
@@ -72,6 +102,7 @@ export function ActivityAreaChart() {
             margin={{
               left: 12,
               right: 12,
+              top: 18,
             }}
           >
             <CartesianGrid vertical={false} />

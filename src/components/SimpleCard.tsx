@@ -1,16 +1,16 @@
 import React from "react";
 
 type Props = {
-  title: string;
   margin?: string;
+  children: any;
 };
 
-const SimpleCard = ({ title, margin }: Props) => {
+const SimpleCard = ({ children, margin }: Props) => {
   return (
     <div
-      className={`${margin} bg-primary-foreground dark:bg-muted-foreground/10 h-36 w-[15rem] border border-muted-foreground/10 rounded-lg`}
+      className={`${margin} bg-primary-foreground dark:bg-muted-foreground/10 h-32 w-[14rem] border border-muted-foreground/10 rounded-lg`}
     >
-      <p>{title}</p>
+      {children}
     </div>
   );
 };

@@ -6,6 +6,9 @@ import { useAuth } from "@/contexts/AuthenticationContext";
 import userPlaceholder from "@/assets/user.svg";
 import profileImg from "@/assets/face-potrait.jpg";
 import MiniCards from "@/components/MiniCards";
+import freshFruitJuice from "@/assets/fresh-fruit-juice.jpg";
+import fruits from "@/assets/fruits.jpg";
+import vegges from "@/assets/vegges.jpg";
 import heart from "@/assets/heart.svg";
 import moon from "@/assets/moon.svg";
 import burn from "@/assets/explosive.svg";
@@ -19,6 +22,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { TiCancelOutline } from "react-icons/ti";
 import { ActivityAreaChart } from "@/components/ChartsSection/ActivityAreaChart";
+import { ActivityRadialChart } from "@/components/ChartsSection/ActivityRadialChart";
 
 type Props = {};
 
@@ -26,7 +30,7 @@ const DashboardView = (props: Props) => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdown, setIsDropdown] = useState(false);
-  const arrowStyle = "cursor-pointer text-pink-600";
+  const arrowStyle = "cursor-pointer text-primary font-bold";
 
   return (
     <div className="bg-muted/15 h-full px-10">
@@ -51,36 +55,97 @@ const DashboardView = (props: Props) => {
 
           <div className=" grid grid-cols-[60%_40%] mt-8">
             <MainCard height="h-auto" margin="mr-6">
-              <div className="flex justify-between">
-                <p className="text-base font-bold">Activity</p>
-                <div className="flex items-center justify-center">
-                  <p className="text-muted-foreground/75 text-sm">Weekly</p>
-
-                  {!isDropdown ? (
-                    <MdKeyboardArrowDown
-                      size={20}
-                      className={`${arrowStyle} ml-2`}
-                      onClick={() => setIsDropdown(true)}
-                    />
-                  ) : (
-                    <MdKeyboardArrowUp
-                      size={20}
-                      className={`${arrowStyle} ml-2`}
-                      onClick={() => setIsDropdown(false)}
-                    />
-                  )}
-                </div>
-              </div>
               <ActivityAreaChart />
             </MainCard>
             <MainCard height="h-auto">
-              <p>The statistics</p>
+              <ActivityRadialChart />
             </MainCard>
           </div>
-          <div className="bg-primary-foreground dark:bg-muted-foreground/10 mt-8 flex h-48 gap-8 items-center justify-center rounded-md">
-            <SimpleCard title="Fresh Vegges" />
-            <SimpleCard title="Fresh Fruit Juice" />
-            <SimpleCard title="Fresh Orange Fruits" />
+
+          <div className="bg-primary-foreground dark:bg-muted-foreground/10 mt-8 py-6 px-5 flex flex-col items-center justify-center rounded-md">
+            <div className="flex justify-between w-full mx-8">
+              <Link
+                href={"/dashboard/mealplan"}
+                className="my-4 font-semibold tracking-wide cursor-pointer hover:text-primary/90"
+              >
+                Recommended Foods
+              </Link>
+
+              <div className="flex items-center justify-center mr-5">
+                <p className="text-muted-foreground/75 text-sm">Weekly</p>
+
+                {!isDropdown ? (
+                  <MdKeyboardArrowDown
+                    size={20}
+                    className={`${arrowStyle} ml-2`}
+                    onClick={() => setIsDropdown(true)}
+                  />
+                ) : (
+                  <MdKeyboardArrowUp
+                    size={20}
+                    className={`${arrowStyle} ml-2`}
+                    onClick={() => setIsDropdown(false)}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="flex gap-10 relative ">
+              <Image
+                src={vegges}
+                alt="vegges"
+                width={50}
+                height={60}
+                className="rounded-sm  absolute top-7 -left-6"
+              />
+              <SimpleCard>
+                <div className="flex flex-col justify-center ml-14 mt-3">
+                  <p className="mt-2">Fresh Vegges</p>
+                  <p className="mt-2 text-primary font-normal text-sm">
+                    7 Days
+                  </p>
+                  <p className="mt-1 text-muted-foreground/75 font-normal text-sm">
+                    only dinner time
+                  </p>
+                </div>
+              </SimpleCard>
+              <Image
+                src={freshFruitJuice}
+                alt="fresh-fruit-juice"
+                width={50}
+                height={60}
+                className="rounded-sm  absolute top-7 left-60"
+              />
+              <SimpleCard>
+                <div className="flex flex-col justify-center ml-14 mt-3">
+                  <p className="mt-2">Fresh Fruit Juice</p>
+                  <p className="mt-2 text-primary font-normal text-sm">
+                    12 Days
+                  </p>
+                  <p className="mt-1 text-muted-foreground/75 font-normal text-sm">
+                    only lunch time
+                  </p>
+                </div>
+              </SimpleCard>
+              <Image
+                src={fruits}
+                alt="fruits"
+                width={50}
+                height={60}
+                className="rounded-sm  absolute top-7 right-48"
+              />
+              <SimpleCard>
+                <div className="flex flex-col justify-center ml-14 mt-3">
+                  <p className="mt-2">Fresh Orange Fruits</p>
+                  <p className="mt-2 text-primary font-normal text-sm">
+                    7 Days
+                  </p>
+                  <p className="mt-1 text-muted-foreground/75 font-normal text-sm">
+                    only breakfast time
+                  </p>
+                </div>
+              </SimpleCard>
+            </div>
           </div>
 
           <div className=" grid grid-cols-[45%_55%] mt-8">
@@ -100,7 +165,7 @@ const DashboardView = (props: Props) => {
 
               <RxDotsHorizontal
                 onClick={() => setIsOpen(true)}
-                className="cursor-pointer hover:text-pink-600 hover:font-bold"
+                className="cursor-pointer hover:text-primary hover:font-bold"
               />
             </div>
 
@@ -109,7 +174,7 @@ const DashboardView = (props: Props) => {
                 <TiCancelOutline
                   size={20}
                   onClick={() => setIsOpen(false)}
-                  className="cursor-pointer absolute right-3 hover:text-pink-600 hover:font-bold"
+                  className="cursor-pointer absolute right-3 hover:text-primary hover:font-bold"
                 />
                 <div className="flex flex-col items-center justify-center mt-6">
                   <Link
