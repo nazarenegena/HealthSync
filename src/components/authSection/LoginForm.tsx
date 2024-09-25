@@ -19,8 +19,15 @@ function LoginForm() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await logIn(email, password);
-      router.push("/dashboard");
+      const user = await logIn(email, password);
+
+      if (user.isNewUser) {
+        router.push("/anthropometrics");
+      } else {
+        router.push("/dashboard");
+      }
+
+      // router.push("/anthropometrics");
       setEmail("");
       setPassword("");
     } catch (error) {

@@ -68,7 +68,7 @@ export function ActivityAreaChart() {
   const [isDropdown, setIsDropdown] = useState(false);
   const arrowStyle = "cursor-pointer text-primary font-bold";
   return (
-    <Card className="my-8">
+    <Card className="my-8 h-80">
       <div className="flex justify-between m-4">
         <CardDescription className="items-center pb-0">
           Activity

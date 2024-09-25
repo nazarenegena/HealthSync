@@ -48,7 +48,7 @@ const chartConfig = {
 
 export function ActivityRadialChart() {
   return (
-    <Card className="flex flex-col w-full h-auto my-8 pb-5">
+    <Card className="flex flex-col w-full h-80 my-8 pb-5">
       <CardHeader className="items-center pb-0">
         <CardDescription>Today Overview</CardDescription>
       </CardHeader>

@@ -15,6 +15,8 @@ import {
   collection,
   where,
   addDoc,
+  setDoc,
+  doc,
 } from "firebase/firestore";
 
 // user data interface
@@ -24,6 +26,7 @@ interface IUser {
   name?: string | null;
   email: string | null;
   uid: string | null;
+  isNewUser?: boolean;
 }
 
 // user details interface
@@ -46,11 +49,37 @@ export const AuthContextProvider = ({
     uid: null,
     firstname: null,
     lastname: null,
+    isNewUser: false,
   });
   const [loading, setLoading] = useState<Boolean>(true);
+
   // login the user
-  const logIn = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  const logIn = async (email: string, password: string) => {
+    const { user: authObject } = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    if (authObject) {
+      let userObj = {};
+      const userRef = collection(db, "users");
+      const q = query(userRef, where("uid", "==", authObject?.uid));
+
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const userData = doc.data();
+        userObj = {
+          ...userData,
+          name: userData.name,
+          lastname: userData.lastName,
+          email: authObject.email,
+          uid: authObject.uid,
+        };
+      });
+      return userObj;
+    }
+    return null;
   };
 
   // sign up the user
@@ -63,24 +92,35 @@ export const AuthContextProvider = ({
   ) => {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const newUser = res.user;
-    await addDoc(collection(db, "users"), {
+    const docData = {
       uid: newUser.uid,
+      isNewUser: true,
       name: userDetails.firstname,
+      lastName: userDetails.lastname,
       authProvider: "local",
       email,
-    });
+    };
+    await setDoc(doc(db, "users", newUser.uid), docData);
   };
 
   // logout the user
   const logOut = async () => {
-    setUser({ email: null, uid: null, firstname: null, lastname: null });
+    setUser({
+      email: null,
+      uid: null,
+      firstname: null,
+      lastname: null,
+    });
     return await signOut(auth);
   };
 
   // update the state depending on the auth
   // adding the user to the user object before setting it to the state
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      console.log(currentUser, "current user");
+
       if (currentUser) {
         const userRef = collection(db, "users");
         const q = query(userRef, where("uid", "==", currentUser.uid));
@@ -91,10 +131,10 @@ export const AuthContextProvider = ({
           } else {
             querySnapshot.forEach((doc) => {
               const userData = doc.data();
-              console.log(userData, "the user data");
               setUser({
-                ...currentUser,
+                ...userData,
                 name: userData.name,
+                lastname: userData.lastName,
                 email: currentUser.email,
                 uid: currentUser.uid,
               });
@@ -104,7 +144,12 @@ export const AuthContextProvider = ({
           console.error("Error getting documents:", error);
         }
       } else {
-        setUser({ email: null, uid: null, firstname: null, lastname: null });
+        setUser({
+          email: null,
+          uid: null,
+          firstname: null,
+          lastname: null,
+        });
       }
       setLoading(false);
     });
@@ -119,12 +164,3 @@ export const AuthContextProvider = ({
     </AuthContext.Provider>
   );
 };
-
-// Custom hook to use the UserContext
-// export const useUserContext = () => {
-//   const context = useContext(AuthContext);
-//   if (!context) {
-//     throw new Error("useUserContext must be used within a UserContextProvider");
-//   }
-//   return context;
-// };

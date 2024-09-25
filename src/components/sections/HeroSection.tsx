@@ -24,7 +24,7 @@ const HeroSection = (props: Props) => {
             We offer fresh fitness schedules, workout regimes and mealplanners.{" "}
           </p>
           <Button asChild className="w-48 mt-8">
-            <Link href="/dashboard">Get Started</Link>
+            <Link href="/anthropometrics">Get Started</Link>
           </Button>
         </div>
         <div className="w-[40rem] h-[45rem] relative ">

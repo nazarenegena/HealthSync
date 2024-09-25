@@ -15,7 +15,7 @@ const DashboardNavbar = (props: Props) => {
     <div className=" relative flex justify-between pt-10 bg-muted/15 h-28 w-full px-10">
       <div className="flex items-center justify-center">
         {" "}
-        <p className="text-3xl font-normal tracking-wider text-muted-foreground w-full">
+        <p className="text-3xl font-normal tracking-wider text-muted-foreground/75 w-full">
           Hello there
         </p>
         <Image
