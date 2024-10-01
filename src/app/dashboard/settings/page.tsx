@@ -1,28 +1,87 @@
 // `app/page.tsx` is the UI for the `/` URL
 "use client";
-
+import Link from "next/link";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthenticationContext";
+import { CgProfile } from "react-icons/cg";
+import { GiWeightLiftingUp } from "react-icons/gi";
+import { GrBook } from "react-icons/gr";
+import { MdOutlineRedeem } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import UnitSwitch from "@/components/UpdateProfile/UnitSwitch";
+import UpdateMeasurments from "@/components/UpdateProfile/UpdateMeasurments";
 
 export default function Page() {
   const { user } = useAuth();
+  console.log(user, "settings");
+
   return (
-    <h1>
-      Settings Page
-      {/* anthropometrics */}
-      <div className="flex justify-between gap-8 my-6 border border-muted-foreground/10 w-full px-3 py-4 rounded-md">
-        <div>
-          <p className="text-sm font-medium">65kg</p>
-          <p className="text-sm text-muted-foreground/75 mt-1">Weight</p>
+    <div className="bg-muted/15 h-full flex flex-col items-center">
+      <p className="mt-10 mb-8 font-bold text-md text-center">SETTINGS</p>
+      {/* Account */}
+      <div className="w-[45rem]">
+        <p className="font-bold text-2xl mb-5">Account</p>
+
+        <div className=" flex justify-between py-5">
+          <div className="flex justify-between">
+            <CgProfile size={22} color="#a462af" />
+            <Link
+              href="/dashboard/settings/editprofile"
+              className="cursor-pointer ml-5 text-sm text-muted-foreground"
+            >
+              Edit Profile
+            </Link>
+          </div>
+
+          <CiEdit size={22} strokeWidth={0.2} />
         </div>
-        <div>
-          <p className="text-sm font-medium">170cm</p>
-          <p className="text-sm text-muted-foreground/75 mt-1">height</p>
+        <hr />
+
+        <div className=" flex justify-between py-5">
+          <div className="flex items-center">
+            <GiWeightLiftingUp size={22} color="#a462af" />
+            <Link
+              href="/dashboard/settings/workoutpreference"
+              className="cursor-pointer ml-5 text-sm text-muted-foreground"
+            >
+              Workout Preference
+            </Link>
+          </div>
+          <CiEdit size={22} strokeWidth={0.2} />
         </div>
-        <div>
-          <p className="text-sm font-medium">25</p>
-          <p className="text-sm text-muted-foreground/75 mt-1">Age</p>
-        </div>
+        <hr />
       </div>
-    </h1>
+
+      {/* Unit */}
+      <UpdateMeasurments />
+
+      {/* Help */}
+      <div className="w-[45rem] mt-10">
+        <p className="font-bold text-2xl mt-5 mb-3">Unit</p>
+
+        <div className=" flex justify-between py-5">
+          <div className="flex items-center">
+            <GrBook size={28} color="#a462af" />
+            <p className="ml-5 text-sm text-muted-foreground">
+              Help Center
+            </p>{" "}
+          </div>
+          <CiEdit size={22} strokeWidth={0.2} />
+        </div>
+        <hr />
+
+        <div className=" flex justify-between py-5">
+          <div className="flex items-center">
+            <MdOutlineRedeem size={28} color="#a462af" />
+            <p className="ml-5 text-sm text-muted-foreground">Redeem Promo</p>
+          </div>
+          <CiEdit size={22} strokeWidth={0.2} />
+        </div>
+        <hr />
+      </div>
+    </div>
   );
 }
