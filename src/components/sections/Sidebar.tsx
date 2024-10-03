@@ -3,11 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import { Button } from "../ui/button";
 import runner from "@/assets/runner.svg";
 import workout from "@/assets/workout.svg";
-import pilates from "@/assets/pilates.svg";
-import { ModeToggle } from "@/components/ModeToggle";
 import { usePathname } from "next/navigation";
 
 type Props = {};

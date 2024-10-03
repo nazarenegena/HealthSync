@@ -9,13 +9,13 @@ interface UnitSwitchProps {
   label1: string; // "kg" or "cm"
   label2: string; //  "lbs" or "feet"
   checked: boolean; // Determines if the switch is toggled
-  onToggle: (checked: boolean) => void; // Callback when the switch is toggled
+  onToggleChange: (checked: boolean) => void; // Callback when the switch is toggled
 }
 
 const UnitSwitch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & UnitSwitchProps
->(({ className, label1, label2, checked, onToggle, ...props }, ref) => {
+>(({ className, label1, label2, checked, onToggleChange, ...props }, ref) => {
   return (
     <SwitchPrimitives.Root
       className={cn(
@@ -23,8 +23,8 @@ const UnitSwitch = React.forwardRef<
         className
       )}
       checked={checked}
-      //   onCheckedChange={onToggle}
-      onCheckedChange={(value: boolean) => onToggle(value)}
+      onCheckedChange={onToggleChange}
+      // onCheckedChange={(value: boolean) => onToggle(value)}
       ref={ref}
       {...props}
     >
