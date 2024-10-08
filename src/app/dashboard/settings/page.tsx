@@ -8,6 +8,7 @@ import { GiWeightLiftingUp } from "react-icons/gi";
 import { GrBook } from "react-icons/gr";
 import { MdOutlineRedeem } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
+import { FaHome } from "react-icons/fa";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
