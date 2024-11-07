@@ -12,18 +12,18 @@ type Props = {};
 const DashboardNavbar = (props: Props) => {
   const { user } = useAuth();
   return (
-    <div className=" relative flex justify-between pt-10 bg-muted/15 h-28 w-full px-10">
+    <div className=" relative flex justify-between pt-10 bg-muted/15 h-28 w-full px-10 mb-5">
       <div className="flex items-center justify-center">
         {" "}
         <p className="text-3xl font-normal tracking-wider text-muted-foreground/75 w-full">
-          Hello there
+          Hello {user.name}
         </p>
         <Image
           src={handwave}
           alt="handwave"
           width={50}
           height={50}
-          className="ml-4"
+          className="ml-4 "
         />
       </div>
       <div className=" relative flex justify-end gap-10">

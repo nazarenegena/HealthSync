@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthenticationContext";
 import { FaHome } from "react-icons/fa";
 import { SlQuestion } from "react-icons/sl";
 import { TiMessages } from "react-icons/ti";
-
+import { IoSearchOutline } from "react-icons/io5";
 import smileEmoji from "@/assets/smile.svg";
 
 type Props = {
@@ -16,6 +16,9 @@ type Props = {
 };
 
 const HelpChart = ({ onClose }: Props) => {
+  const inputStyles =
+    "lg:h-10 h-8 w-72 px-2 border border-neutral text-sm font-medium rounded-md outline-none focus:ring-primary/80 focus:border-primary/80";
+
   const { user } = useAuth();
 
   return (
@@ -54,11 +57,17 @@ const HelpChart = ({ onClose }: Props) => {
           </p>
           <div className="bg-muted py-7 px-4 rounded-md mt-7 shadow-sm">
             <div>
-              <input
-                type="text"
-                placeholder="Search for help"
-                className="w-full h-10 text-sm px-4 font-bold rounded-md "
-              />
+              <div className=" relative flex justify-end gap-10">
+                <input
+                  type="text"
+                  placeholder="Search for help"
+                  className={`${inputStyles}`}
+                />
+                <IoSearchOutline
+                  size={18}
+                  className="absolute top-3 right-5 cursor-pointer text-muted-foreground"
+                />
+              </div>
 
               <div className="mt-2 ml-4">
                 <p className="mt-4 text-sm text-muted-foreground">
@@ -87,6 +96,7 @@ const HelpChart = ({ onClose }: Props) => {
           </div>
         </div>
       </div>
+
       <div className="border-t-0 shadow-inner  mt-6 absolute bottom-0 w-full h-20 bg-white dark:bg-black rounded-b-md">
         <div className="flex justify-evenly items-center mt-5">
           <div className="flex flex-col items-center cursor-pointer hover:text-primary">
