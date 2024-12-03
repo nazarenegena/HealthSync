@@ -29,8 +29,6 @@ interface IUser {
   isNewUser?: boolean;
 }
 
-// user details interface
-
 // create auth context
 const AuthContext = createContext({});
 
@@ -151,7 +149,6 @@ export const AuthContextProvider = ({
           lastname: null,
         });
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -159,8 +156,10 @@ export const AuthContextProvider = ({
 
   // wrapping the children with the context provider
   return (
-    <AuthContext.Provider value={{ user, signUp, logIn, logOut }}>
-      {loading ? null : children}
+    <AuthContext.Provider
+      value={{ user, signUp, logIn, logOut, loading, setLoading }}
+    >
+      {children}
     </AuthContext.Provider>
   );
 };

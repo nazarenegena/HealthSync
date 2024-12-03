@@ -10,6 +10,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoMdEye } from "react-icons/io";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { Loader } from "lucide-react";
 
 const RegisterUserSchema = z
   .object({
@@ -36,6 +39,17 @@ const RegisterUserSchema = z
 type RegisterUserSchemaType = z.infer<typeof RegisterUserSchema>;
 
 function SignupForm() {
+  const { signUp, loading, setLoading } = useAuth();
+  const router = useRouter();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
+
+  const handlePasswordToggle = () => setIsPasswordVisible(!isPasswordVisible);
+  const handleConfirmPasswordToggle = () =>
+    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+
   const {
     handleSubmit,
     formState: { errors },
@@ -44,22 +58,17 @@ function SignupForm() {
     resolver: zodResolver(RegisterUserSchema),
   });
 
-  const { signUp } = useAuth();
-  const router = useRouter();
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
-    useState(false);
-
-  const handlePasswordToggle = () => setIsPasswordVisible(!isPasswordVisible);
-  const handleConfirmPasswordToggle = () =>
-    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
-
   const handleSignUp = async (data: RegisterUserSchemaType) => {
+    setLoading(true);
     try {
       await signUp(data.email, data.password, data);
+      toast.success("Registration Successful");
       router.push("/login");
     } catch (error) {
-      console.error("Error signing up:", error);
+      //@ts-expect-error msg not part of axios error
+      toast.error(error?.message as string);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -184,12 +193,12 @@ function SignupForm() {
 
         {/* Submit Button */}
         <div className="mt-12">
-          <button
-            className="text-md lg:h-10 h-8 lg:w-80 w-60 rounded-md bg-primary/30 hover:bg-primary/40 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/60"
-            type="submit"
-          >
+          <Button type="submit" variant={"primary"}>
+            {" "}
+            {loading && <Loader className="animate-spin mr-6 " />}
             Sign Up
-          </button>
+          </Button>
+
           <div className="flex mt-10 justify-center">
             <p className="mr-3">already have an account?</p>
             <Link

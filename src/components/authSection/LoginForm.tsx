@@ -10,6 +10,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoMdEye } from "react-icons/io";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { Loader } from "lucide-react";
 
 const LoginUserSchema = z.object({
   email: z
@@ -35,7 +38,7 @@ function LoginForm() {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const handlePasswordToggle = () => setIsPasswordVisible(!isPasswordVisible);
-  const { logIn } = useAuth();
+  const { logIn, loading, setLoading } = useAuth();
   const router = useRouter();
 
   const errorTextStyle = "text-red-500 text-sm font-medium mt-1";
@@ -46,16 +49,21 @@ function LoginForm() {
     "lg:h-10 h-8  lg:w-80 w-60 px-2 border border-neutral text-sm font-medium rounded-md outline-none focus:ring-primary/80 focus:border-primary/80";
 
   const handleLogin = async (data: LoginUserSchemaType) => {
+    setLoading(true);
     try {
       const user = await logIn(data.email, data.password, data);
 
       if (user.isNewUser) {
+        toast.success("Login Successful");
         router.push("/anthropometrics");
       } else {
         router.push("/dashboard");
       }
     } catch (error) {
-      console.error("Login Error:", error);
+      //@ts-expect-error msg not part of axios error
+      toast.error(error?.message as string);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -113,12 +121,10 @@ function LoginForm() {
         )}
 
         <div className="mt-12 ">
-          <button
-            className="text-md lg:h-10 h-8 lg:w-80 w-60 rounded-md bg-primary/30 hover:bg-primary/40 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/60"
-            type="submit"
-          >
+          <Button type="submit" variant={"primary"}>
+            {loading && <Loader className="animate-spin mr-6" />}
             Log in
-          </button>
+          </Button>
           <div className="flex mt-10 justify-center">
             <p className="mr-3">{`don't have an account ?`}</p>
             <Link

@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthenticationContext";
 import { db } from "@/config/firebase.config";
 import { doc, setDoc } from "firebase/firestore";
 import { IUserProfile } from "../anthropometricsSection/AnthropometricsView";
+import { Button } from "../ui/button";
 
 type Props = {};
 
