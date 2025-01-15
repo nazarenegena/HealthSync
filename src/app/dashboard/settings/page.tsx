@@ -100,7 +100,7 @@ export default function Page() {
         <IoClose
           onClick={handleModalClose}
           size={22}
-          className="text-primary hover:text-teal-600/50 cursor-pointer absolute top-16 right-6"
+          className="text-primary hover:text-teal-600/50 cursor-pointer absolute top-28 right-7 z-50"
         />
       ) : null}
 

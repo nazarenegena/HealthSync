@@ -15,16 +15,16 @@ const HelpChart = () => {
 
   return (
     <Tabs
-      className="h-[45rem] bg-white dark:bg-black w-96 absolute right-3 bottom-3 z-20 shadow-lg rounded-md mb-10"
+      className="h-[45rem] bg-white dark:bg-black w-96 absolute right-3 bottom-3 z-20 shadow-lg rounded-md mb-10 "
       defaultValue="home"
     >
-      <TabsContent value="help" className=" h-[40rem]">
+      <TabsContent value="help" className=" h-[40rem] overflow-y-scroll">
         <Help />
       </TabsContent>
       <TabsContent value="home" className=" h-[40rem]">
         <Home />
       </TabsContent>
-      <TabsContent value="messages" className=" h-[40rem]">
+      <TabsContent value="messages" className=" h-[40rem] overflow-y-scroll">
         <Messages />
       </TabsContent>
       {/* tabs list */}
