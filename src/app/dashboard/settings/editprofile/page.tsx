@@ -9,8 +9,13 @@ import { GiBodyHeight } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthenticationContext";
 import UnitSwitch from "@/components/UpdateProfile/UnitSwitch";
+import { toast } from "sonner";
+import { Loader } from "lucide-react";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
-interface IFormInput {
+import Link from "next/link";
+
+export interface IFormInput {
   firstName?: string;
   lastName?: string;
   age?: number;
@@ -25,12 +30,12 @@ interface IFormInput {
 }
 
 export default function Page() {
-  const { user } = useAuth();
+  const { user, loading, setLoading } = useAuth();
   const divStyle = "flex justify-between py-8 ";
   const titleStyle =
     "tracking-wider font-semibold text-muted-foreground mr-10 w-36";
   const textStyle =
-    "text-muted-foreground tracking-wider text-end font-light ml-10";
+    "text-primary tracking-wider text-end font-semibold text-lg ml-10";
   const [weight, setWeight] = useState<number>(user?.weight?.value || 0);
   const [weightUnit, setWeightUnit] = useState<"kg" | "lbs">(
     user?.weight?.unit || "kg"
@@ -73,9 +78,9 @@ export default function Page() {
   // Converts weight
   const convertWeight = (weight: number, unit: "kg" | "lbs"): number => {
     if (unit === "lbs") {
-      return weight * 2.20462;
+      return parseFloat((weight * 2.20462).toFixed(1));
     } else {
-      return weight / 2.20462;
+      return parseFloat((weight / 2.20462).toFixed(1));
     }
   };
 
@@ -111,6 +116,7 @@ export default function Page() {
   };
 
   const handleEditProfile = async (data: IFormInput) => {
+    setLoading(true);
     if (!user?.uid) return;
 
     const editProfileRef = doc(db, "users", user?.uid);
@@ -124,10 +130,12 @@ export default function Page() {
 
     // Proceed with saving the updated data
     await setDoc(editProfileRef, editedData);
+    toast.success("profile updated");
+    setLoading(false);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center relative">
       <p className="text-2xl mb-4 tracking-wider font-semibold text-muted-foreground">
         Personal Info
       </p>
@@ -162,6 +170,7 @@ export default function Page() {
 
         {/* Weight */}
         <div className="flex items-center mt-16">
+          {" "}
           <IoScaleOutline size={28} color="#a462af" />
           <Input
             type="number"
@@ -208,10 +217,18 @@ export default function Page() {
           />
         </div>
 
-        <Button className="mt-12 w-36 h-10 bg-teal-600/25 rounded-md shadow-sm hover:border hover:border-teal-600/80 text-sm text-muted-foreground">
+        <button className="mt-12 w-40 h-12 bg-teal-600/25 rounded-md shadow-sm hover:border hover:border-teal-600/80 text-sm text-muted-foreground flex items-center justify-center ">
+          {loading && <Loader className="animate-spin mr-4 text-white/70" />}
           Update Profile
-        </Button>
+        </button>
       </form>
+      <Link
+        href={"/dashboard/settings"}
+        className=" mt-12 text-muted-foreground font-medium text-base hover:text-primary hover:underline flex items-center"
+      >
+        <IoIosArrowRoundBack size={28} />
+        Back
+      </Link>
     </div>
   );
 }

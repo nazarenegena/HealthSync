@@ -49,7 +49,7 @@ export const AuthContextProvider = ({
     lastname: null,
     isNewUser: false,
   });
-  const [loading, setLoading] = useState<Boolean>(true);
+  const [loading, setLoading] = useState<Boolean>(false);
 
   // login the user
   const logIn = async (email: string, password: string) => {

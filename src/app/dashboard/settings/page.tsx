@@ -9,10 +9,7 @@ import { GrBook } from "react-icons/gr";
 import { MdOutlineRedeem } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { FaHome } from "react-icons/fa";
-
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import UnitSwitch from "@/components/UpdateProfile/UnitSwitch";
+import { IoClose } from "react-icons/io5";
 import UpdateMeasurments from "@/components/UpdateProfile/UpdateMeasurments";
 import HelpChart from "@/components/HelpSection/helpChart";
 
@@ -35,15 +32,16 @@ export default function Page() {
         <div className=" flex justify-between py-5">
           <div className="flex justify-between">
             <CgProfile size={22} color="#a462af" />
-            <Link
-              href="/dashboard/settings/editprofile"
-              className="cursor-pointer ml-5 text-sm text-muted-foreground"
-            >
-              Edit Profile
-            </Link>
-          </div>
 
-          <CiEdit size={22} strokeWidth={0.2} />
+            <p className=" ml-5 text-sm text-muted-foreground">Edit Profile</p>
+          </div>
+          <Link href="/dashboard/settings/editprofile">
+            <CiEdit
+              size={22}
+              strokeWidth={0.2}
+              className="cursor-pointer hover:text-primary"
+            />
+          </Link>
         </div>
         <hr />
 
@@ -98,7 +96,15 @@ export default function Page() {
         </div>
         <hr />
       </div>
-      {isOpen ? <HelpChart onClose={handleModalClose} /> : null}
+      {isOpen ? (
+        <IoClose
+          onClick={handleModalClose}
+          size={22}
+          className="text-primary hover:text-teal-600/50 cursor-pointer absolute top-16 right-6"
+        />
+      ) : null}
+
+      {isOpen ? <HelpChart /> : null}
     </div>
   );
 }

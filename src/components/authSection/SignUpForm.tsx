@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthenticationContext";
@@ -195,7 +195,7 @@ function SignupForm() {
         <div className="mt-12">
           <Button type="submit" variant={"primary"}>
             {" "}
-            {loading && <Loader className="animate-spin mr-6 " />}
+            {loading && <Loader className="animate-spin mr-6 text-white/70" />}
             Sign Up
           </Button>
 

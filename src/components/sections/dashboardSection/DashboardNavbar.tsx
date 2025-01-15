@@ -31,11 +31,11 @@ const DashboardNavbar = (props: Props) => {
           type="text"
           placeholder="search ..."
           name="search"
-          className="w-72 h-10 rounded-full shadow-sm px-6 "
+          className="lg:h-10 h-8 w-72 px-2 border border-muted-foreground/20 text-sm font-medium rounded-md outline-none focus:ring-primary/80 focus:border-primary/80"
         />
         <IoSearchOutline
-          size={20}
-          className="absolute top-[0.75rem] right-28 cursor-pointer "
+          size={18}
+          className="absolute top-[0.75rem] right-28 cursor-pointer text-muted-foreground"
         />
 
         <div className="">

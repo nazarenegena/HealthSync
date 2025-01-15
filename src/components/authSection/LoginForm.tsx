@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "../ModeToggle";
 import { useAuth } from "@/contexts/AuthenticationContext";
@@ -122,7 +122,7 @@ function LoginForm() {
 
         <div className="mt-12 ">
           <Button type="submit" variant={"primary"}>
-            {loading && <Loader className="animate-spin mr-6" />}
+            {loading && <Loader className="animate-spin mr-6 text-white/70" />}
             Log in
           </Button>
           <div className="flex mt-10 justify-center">
