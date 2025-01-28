@@ -23,7 +23,7 @@ export default function Workout() {
   console.log(query.data, "query");
 
   return (
-    <div>
+    <div className="grid grid-cols-4">
       {query.data?.map((workout: IWorkout) => (
         <div key={workout.id}>
           <WorkoutCard
@@ -33,8 +33,6 @@ export default function Workout() {
           />
         </div>
       ))}
-
-      <p>workouts</p>
     </div>
   );
 }

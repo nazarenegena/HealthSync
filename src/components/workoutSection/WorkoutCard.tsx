@@ -44,19 +44,19 @@ const WorkoutCard = ({
       className="grid grid-row-3 gap-4 p-4 cursor-pointer"
       onClick={handleViewWorkout}
     >
-      <div>{name}</div>
-      <div>{equipment}</div>
-      <Image
-        src={gifUrl}
-        alt="workout-pic"
-        width={100}
-        height={50}
-        unoptimized
-      />
-      <div>{target}</div>
-      <div>{secondaryMuscles}</div>
-      <div>{instructions}</div>
-      <div>{bodyPart}</div>
+      <div className=" relative bg-white  flex flex-col items-center  w-full h-[24rem]  rounded-md">
+        <Image
+          src={gifUrl}
+          alt="workout-pic"
+          width={200}
+          height={150}
+          className="object-contain w-full h-[24rem] rounded"
+        />
+        <div className="absolute h-[24rem]  w-full z-20 bg-muted-foreground/20 opacity-30 rounded-md"></div>
+        <div className="absolute top-2 left-3 font-bold text-sm py-2 w-52 ">
+          <p className="text-black/80 z-50 text-sm tracking-wider"> {name}</p>
+        </div>
+      </div>
     </div>
   );
 };
