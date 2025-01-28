@@ -44,7 +44,7 @@ const WorkoutCard = ({
       className="grid grid-row-3 gap-4 p-4 cursor-pointer"
       onClick={handleViewWorkout}
     >
-      <div className=" relative bg-white  flex flex-col items-center  w-full h-[24rem]  rounded-md">
+      <div className=" relative bg-white  flex flex-col items-center  w-full h-[24rem]  rounded-md shadow-md hover:shadow-xl transform hover:scale-120 transition duration-350 ease-in-out">
         <Image
           src={gifUrl}
           alt="workout-pic"
