@@ -1,11 +1,8 @@
 "use client";
 
 import React from "react";
-import RecipeSearch from "./RecipeSearch";
 import RandomRecipe from "./RandomRecipe";
-import Search from "./Search";
 import { useRouter } from "next/navigation";
-import RecipeByNutrients from "./RecipeByNutrients";
 
 const MainRecipeView = () => {
   const router = useRouter();
@@ -15,10 +12,13 @@ const MainRecipeView = () => {
   };
   return (
     <div>
-      {/* <RecipeSearch /> */}
-      <Search onNextPage={handleNextPage} />
+      <div
+        onClick={handleNextPage}
+        className="cursor-pointer bg-primary/30 w-80 h-14 flex items-center justify-center rounded-md shadow-md hover:bg-primary/35 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 "
+      >
+        Explore More Meals
+      </div>
       <RandomRecipe />
-      <RecipeByNutrients />
     </div>
   );
 };

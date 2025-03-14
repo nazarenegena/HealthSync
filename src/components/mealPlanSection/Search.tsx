@@ -37,11 +37,7 @@ export interface SedIngredient {
   unitShort: string;
 }
 
-interface Props {
-  onNextPage?: () => void;
-}
-
-const Search = ({ onNextPage }: Props) => {
+const Search = () => {
   const [queryId, setQueryId] = useState<string>("");
   const [searchedData, setSearchedData] = useState<IFilteredRecipe[]>([]);
   const { register, handleSubmit } = useForm<IFormInput>();
@@ -77,17 +73,17 @@ const Search = ({ onNextPage }: Props) => {
   };
 
   return (
-    <div onClick={onNextPage}>
+    <div>
       <form className="relative" onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register("receipeInput")}
           type="text"
           placeholder="hungry for ..."
-          className="w-1/2 bg-muted-foreground/5 h-14 shadow-inner border border-muted-foreground/10 rounded-full px-10 placeholder:text-muted-foreground/70 focus:outline-none focus:border-primary/40"
+          className="w-[40rem] bg-muted-foreground/5 h-14 shadow-inner border border-muted-foreground/10 rounded-full px-10 placeholder:text-muted-foreground/70 focus:outline-none focus:border-primary/40"
         />
         <button type="submit">
           <FiSearch
-            className="absolute top-4 left-[29rem] cursor-pointer text-muted-foreground/80 hover:text-primary "
+            className="absolute top-4 left-[35rem] cursor-pointer text-muted-foreground/80 hover:text-primary "
             size={22}
           />
         </button>
