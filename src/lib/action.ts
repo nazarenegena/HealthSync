@@ -1,6 +1,5 @@
 "use server";
 
-import receipeAxiosClient from "@/app/services/receipeAxiosInstance";
 import axios from "axios";
 const headers = {
   "x-rapidapi-key": "HkIPT1OuewEOoa+SXPP8Ew==fnFWYJe8ptK5KLxJ",
@@ -21,6 +20,6 @@ export async function fetchRecipes() {
     console.log(results, "results");
     return results;
   } catch (error) {
-    console.log(error, "erro");
+    console.log(error, "error");
   }
 }
