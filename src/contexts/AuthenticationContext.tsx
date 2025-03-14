@@ -112,13 +112,8 @@ export const AuthContextProvider = ({
     return await signOut(auth);
   };
 
-  // update the state depending on the auth
-  // adding the user to the user object before setting it to the state
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log(currentUser, "current user");
-
       if (currentUser) {
         const userRef = collection(db, "users");
         const q = query(userRef, where("uid", "==", currentUser.uid));

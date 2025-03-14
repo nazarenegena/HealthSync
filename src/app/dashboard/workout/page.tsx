@@ -1,4 +1,3 @@
-// `app/page.tsx` is the UI for the `/` URL
 "use client";
 
 type Props = {};
@@ -14,13 +13,11 @@ export default function Workout() {
 
   async function getWorkouts(): Promise<any[]> {
     const res = await client.get("/exercises");
-    console.log(res);
     setWorkouts(res.data);
     return res.data;
   }
 
   const query = useQuery({ queryKey: ["workouts"], queryFn: getWorkouts });
-  console.log(query.data, "query");
 
   return (
     <div className="grid grid-cols-4">

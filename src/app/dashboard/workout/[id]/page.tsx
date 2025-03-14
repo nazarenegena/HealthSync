@@ -29,7 +29,6 @@ export default function Page({ params }: { params: { id: string } }) {
     const response = await client.get<IExercise>(
       `/exercises/exercise/${params.id}`
     );
-    console.log(response.data, "the data");
     return response.data;
   };
 
