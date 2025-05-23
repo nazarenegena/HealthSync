@@ -4,12 +4,11 @@ import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import { cn } from "@/lib/utils";
 
-// Props for UnitSwitch
 interface UnitSwitchProps {
-  label1: string; // "kg" or "cm"
-  label2: string; //  "lbs" or "feet"
-  checked: boolean; // Determines if the switch is toggled
-  onToggleChange: (checked: boolean) => void; // Callback when the switch is toggled
+  label1: string;
+  label2: string;
+  checked: boolean;
+  onToggleChange: (checked: boolean) => void;
 }
 
 const UnitSwitch = React.forwardRef<
@@ -24,12 +23,10 @@ const UnitSwitch = React.forwardRef<
       )}
       checked={checked}
       onCheckedChange={onToggleChange}
-      // onCheckedChange={(value: boolean) => onToggle(value)}
       ref={ref}
       {...props}
     >
       <div className="relative w-full h-full">
-        {/* Label 1 (e.g., kg or cm) */}
         <span
           className={cn(
             "absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold z-10 transition-colors duration-200",
@@ -46,7 +43,6 @@ const UnitSwitch = React.forwardRef<
           )}
         />
 
-        {/* Label 2 (e.g., lbs or feet) */}
         <span
           className={cn(
             "absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold z-10 transition-colors duration-200",

@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "@/config/firebase.config";
 import { db } from "@/config/firebase.config";
+import { IUser } from "@/lib/types";
 import {
   getFirestore,
   query,
@@ -20,22 +21,12 @@ import {
 } from "firebase/firestore";
 
 // user data interface
-interface IUser {
-  firstname?: string | null;
-  lastname?: string | null;
-  name?: string | null;
-  email: string | null;
-  uid: string | null;
-  isNewUser?: boolean;
-}
 
 // create auth context
 const AuthContext = createContext({});
 
-// export AuthContext to make it available
 export const useAuth = () => useContext<any>(AuthContext);
 
-// create the auth context provider
 export const AuthContextProvider = ({
   children,
 }: {

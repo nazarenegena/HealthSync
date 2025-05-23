@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
+import RecipeSearch from "./RecipeSearch";
 
 interface INutrients {
   id: number;
@@ -37,11 +38,20 @@ const RecipeByNutrients = (props: Props) => {
 
   console.log(data, "new dta");
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col mt-80">
+        <p className="font-semibold text-muted-foreground/50">
+          Your meals will appear soon ...
+        </p>
+      </div>
+    );
   if (error) return <div>Sorry There was an Error</div>;
 
   return (
     <div>
+      <RecipeSearch />
+
       {/* {data?.results.map((nutrient: INutrients) => (
         <div key={nutrient.id}>
           <div>

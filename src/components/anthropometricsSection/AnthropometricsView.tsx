@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useAuth } from "@/contexts/AuthenticationContext";
+import React, { useState } from "react";
+import { useUser } from "@/contexts/UserContextProvider";
 import { useRouter } from "next/navigation";
-import { db } from "@/config/firebase.config";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { doc, setDoc } from "firebase/firestore";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -19,13 +17,13 @@ import { ModeToggle } from "../ModeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Loader } from "lucide-react";
+import { addProfile, getProfile } from "@/app/action";
 
 export interface IUserProfile {
   age?: number;
@@ -72,7 +70,6 @@ const convertWeight = (weight: number, unit: "kg" | "lbs"): number => {
   }
 };
 
-// Converts height to the desired unit and rounds it to an appropriate decimal place
 const convertHeight = (height: number, unit: "cm" | "feet"): number => {
   if (unit === "cm") {
     return parseFloat((height * 30.48).toFixed(1));
@@ -83,13 +80,11 @@ const convertHeight = (height: number, unit: "cm" | "feet"): number => {
 
 const AnthropometricsView = () => {
   const [frequency, setFrequency] = useState("");
-  const { user, loading, setLoading } = useAuth();
+  const { user, loading, setLoading, setUser } = useUser();
   const [weight, setWeight] = useState<number>(0);
   const [weightUnit, setWeightUnit] = useState<"kg" | "lbs">("kg");
-
   const [height, setHeight] = useState<number>(0);
   const [heightUnit, setHeightUnit] = useState<"cm" | "feet">("cm");
-
   const router = useRouter();
 
   const errorTextStyle = "text-red-500 text-sm font-medium mt-1";
@@ -107,6 +102,7 @@ const AnthropometricsView = () => {
       weightUnit: "kg",
     },
   });
+
   const heightValue = watch("height");
   const weightValue = watch("weight");
 
@@ -117,8 +113,6 @@ const AnthropometricsView = () => {
 
     setWeight(convertedWeight);
     setWeightUnit(newUnit);
-
-    // Sync React Hook Form values
     setValue("weight", convertedWeight);
     setValue("weightUnit", newUnit);
   };
@@ -129,53 +123,60 @@ const AnthropometricsView = () => {
     const convertedHeight = convertHeight(heightValue, newUnit);
     setHeight(isNaN(heightValue) ? 0 : heightValue);
     setValue("height", isNaN(heightValue) ? 0 : heightValue);
-
     setHeight(convertedHeight);
     setHeightUnit(newUnit);
-
     setValue("height", convertedHeight);
     setValue("heightUnit", newUnit);
   };
 
-  // update the profile
-  const handleUpdateProfile = async (data: AnthropometricUserSchemaType) => {
-    if (!user?.uid) return;
-
-    const profileRef = doc(db, "users", user.uid);
-    const updatedData = {
-      isNewUser: false,
-      age: data.age,
-      height: { value: data.height, unit: data.heightUnit },
-      weight: { value: data.weight, unit: data.weightUnit },
-    };
-    router.push("/dashboard");
+  // updating the profile
+  const handleAddProfile = async (
+    profileData: AnthropometricUserSchemaType
+  ) => {
+    if (!user?.uid) {
+      toast.error("User not authenticated");
+      return;
+    }
     setLoading(true);
+
     try {
-      await setDoc(profileRef, updatedData, { merge: true });
+      const result = await addProfile({
+        user_id: user.uid,
+        age: profileData.age,
+        height: profileData.height,
+        height_unit: profileData.heightUnit,
+        weight: profileData.weight,
+        weight_unit: profileData.weightUnit,
+      });
+
+      if (result?.error) {
+        throw new Error(result.error);
+      }
       toast.success("Profile Updated Successfully");
+      router.push("/dashboard");
+      setWeight(0);
+      setHeight(0);
     } catch (error) {
-      //@ts-expect-error msg not part of axios error
-      toast.error(error?.message as string);
       console.error("Error updating profile:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Error updating profile"
+      );
     } finally {
       setLoading(false);
     }
-
-    setWeight(0);
-    setHeight(0);
+    const userProfile = await getProfile(user.uid ?? undefined);
+    return userProfile;
   };
-
   return (
     <div>
       <ModeToggle />
       <form
-        onSubmit={handleSubmit(handleUpdateProfile)}
+        onSubmit={handleSubmit(handleAddProfile)}
         className="mt-20 flex flex-col justify-center items-center"
       >
         <p className="text-2xl mb-4 tracking-wider font-semibold text-muted-foreground">
           Create Your Profile
         </p>
-
         <div className="flex items-center  mt-20">
           <GiLifeInTheBalance size={24} color="#a462af" />
 
@@ -217,18 +218,7 @@ const AnthropometricsView = () => {
           {errors.height && (
             <p className={errorTextStyle}>{errors.weight?.message}</p>
           )}
-          {/* <Input
-            type="text"
-            placeholder="Weight"
-            value={weight || ""}
-            onChange={(e) => {
-              const value = parseFloat(e.target.value);
 
-              // Prevent NaN issues
-              setWeight(isNaN(value) ? 0 : value);
-              setValue("weight", isNaN(value) ? 0 : value);
-            }}
-          /> */}
           <UnitSwitch
             label1="kg"
             label2="lbs"

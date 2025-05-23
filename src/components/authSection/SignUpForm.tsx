@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthenticationContext";
 import { ModeToggle } from "../ModeToggle";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +12,8 @@ import { IoMdEye } from "react-icons/io";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Loader } from "lucide-react";
+import { signup } from "@/app/action";
+import { useUser } from "@/contexts/UserContextProvider";
 
 const RegisterUserSchema = z
   .object({
@@ -39,7 +40,7 @@ const RegisterUserSchema = z
 type RegisterUserSchemaType = z.infer<typeof RegisterUserSchema>;
 
 function SignupForm() {
-  const { signUp, loading, setLoading } = useAuth();
+  const { loading, setLoading } = useUser();
   const router = useRouter();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -52,21 +53,43 @@ function SignupForm() {
 
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    setError,
     register,
   } = useForm<RegisterUserSchemaType>({
     resolver: zodResolver(RegisterUserSchema),
   });
 
-  const handleSignUp = async (data: RegisterUserSchemaType) => {
-    setLoading(true);
+  const handleSignup = async (data: RegisterUserSchemaType) => {
     try {
-      await signUp(data.email, data.password, data);
-      toast.success("Registration Successful");
-      router.push("/login");
+      setLoading(true);
+      if (data.password !== data.confirmPassword) {
+        setError("confirmPassword", {
+          message: "Passwords do not match",
+        });
+        return;
+      }
+      const result = await signup({
+        email: data.email,
+        password: data.password,
+        firstname: data.firstname,
+        lastname: data.lastname,
+      });
+
+      if (result?.error) {
+        toast.error(result.error);
+        if (result.error.includes("email")) {
+          setError("email", { message: result.error });
+        } else if (result.error.includes("password")) {
+          setError("password", { message: result.error });
+        }
+      } else if (result?.success) {
+        toast.success("Registration Successful!");
+
+        router.push("/anthropometrics");
+      }
     } catch (error) {
-      //@ts-expect-error msg not part of axios error
-      toast.error(error?.message as string);
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -85,7 +108,7 @@ function SignupForm() {
       </div>
 
       <form
-        onSubmit={handleSubmit(handleSignUp)}
+        onSubmit={handleSubmit(handleSignup)}
         className="flex flex-col lg:px-48 px-24 justify-center"
       >
         <p className="text-2xl mb-4 tracking-wider font-semibold text-muted-foreground">
@@ -193,9 +216,10 @@ function SignupForm() {
 
         {/* Submit Button */}
         <div className="mt-12">
-          <Button type="submit" variant={"primary"}>
-            {" "}
-            {loading && <Loader className="animate-spin mr-6 text-white/70" />}
+          <Button type="submit" variant={"primary"} disabled={isSubmitting}>
+            {isSubmitting && loading && (
+              <Loader className="animate-spin mr-6 text-white/70" />
+            )}{" "}
             Sign Up
           </Button>
 

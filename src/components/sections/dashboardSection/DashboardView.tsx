@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { useAuth } from "@/contexts/AuthenticationContext";
-import userPlaceholder from "@/assets/user.svg";
 import profileImg from "@/assets/face-potrait.jpg";
 import MiniCards from "@/components/MiniCards";
 import freshFruitJuice from "@/assets/fresh-fruit-juice.jpg";
@@ -24,11 +22,12 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 import { TiCancelOutline } from "react-icons/ti";
 import { ActivityAreaChart } from "@/components/ChartsSection/ActivityAreaChart";
 import { ActivityRadialChart } from "@/components/ChartsSection/ActivityRadialChart";
+import { useUser } from "@/contexts/UserContextProvider";
 
 type Props = {};
 
 const DashboardView = (props: Props) => {
-  const { user } = useAuth();
+  const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [openSchedule, setOpenSchedule] = useState(false);
   const [isDropdown, setIsDropdown] = useState(false);
@@ -36,6 +35,7 @@ const DashboardView = (props: Props) => {
 
   return (
     <div className="bg-muted/15 h-full px-10">
+      {" "}
       <div className="grid grid-cols-[75%_25%] mt-5 gap-5">
         <div className="">
           <div className="flex">
@@ -65,7 +65,6 @@ const DashboardView = (props: Props) => {
           </div>
 
           {/* recommended foods section */}
-
           <div className="bg-primary-foreground dark:bg-muted-foreground/10 h-80 mt-8 px-6  flex flex-col items-center  rounded-md">
             <div className="flex justify-between w-full mt-10 ">
               <Link
@@ -156,7 +155,6 @@ const DashboardView = (props: Props) => {
         </div>
 
         {/* Profile Section */}
-
         <div className="bg-primary-foreground dark:bg-muted-foreground/10 rounded-md border border-muted-foreground/10 px-5 pt-5">
           {/* profile picture */}
           <div className="relative">
@@ -202,10 +200,10 @@ const DashboardView = (props: Props) => {
               />
               <div className="mt-2 text-center">
                 <p className="text-muted-foreground font-medium text-sm">
-                  {user.name}
+                  {user?.firstname}
                 </p>
                 <p className="text-muted-foreground/80 font-normal text-xs">
-                  {user.email}
+                  {user?.email}
                 </p>
               </div>
             </div>
@@ -240,8 +238,8 @@ const DashboardView = (props: Props) => {
           <div className="flex flex-col justify-center items-center mt-2">
             <CalenderView />
           </div>
-          {/* scheduled */}
 
+          {/* scheduled */}
           <div className="my-4 ">
             <p className=" mb-4 text-sm tracking-wider font-medium">
               Scheduled

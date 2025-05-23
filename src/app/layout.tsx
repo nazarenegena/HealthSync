@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AuthContextProvider } from "@/contexts/AuthenticationContext";
 import { Toaster } from "sonner";
 import QueryContextProvider from "@/contexts/QueryContextProvider";
+import { UserContextProvider } from "@/contexts/UserContextProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryContextProvider>
-            <AuthContextProvider>
+            <UserContextProvider>
               <Toaster
                 position="top-right"
                 toastOptions={{
@@ -43,7 +44,7 @@ export default function RootLayout({
                 }}
               />{" "}
               {children}
-            </AuthContextProvider>
+            </UserContextProvider>
           </QueryContextProvider>
         </ThemeProvider>
       </body>

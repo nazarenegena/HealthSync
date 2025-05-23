@@ -45,7 +45,7 @@ export default function Page() {
         </div>
         <hr />
 
-        <div className=" flex justify-between py-5">
+        <div className=" flex justify-between py-5 c">
           <div className="flex items-center">
             <GiWeightLiftingUp size={22} color="#a462af" />
             <Link
@@ -55,7 +55,11 @@ export default function Page() {
               Workout Preference
             </Link>
           </div>
-          <CiEdit size={22} strokeWidth={0.2} />
+          <CiEdit
+            size={22}
+            strokeWidth={0.2}
+            className="cursor-pointer hover:text-primary"
+          />
         </div>
         <hr />
       </div>

@@ -173,8 +173,6 @@ const ChartTooltipContent = React.forwardRef<
       return null;
     }
 
-    console.log(payload, "payload");
-
     return (
       <div
         ref={ref}

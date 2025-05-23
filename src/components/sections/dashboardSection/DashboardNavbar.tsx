@@ -3,20 +3,20 @@
 import { ModeToggle } from "@/components/ModeToggle";
 import React from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import { useAuth } from "@/contexts/AuthenticationContext";
 import Image from "next/image";
 import handwave from "@/assets/handwave.svg";
+import { useUser } from "@/contexts/UserContextProvider";
 
 type Props = {};
 
 const DashboardNavbar = (props: Props) => {
-  const { user } = useAuth();
+  const { user } = useUser();
   return (
     <div className=" relative flex justify-between pt-10 bg-muted/15 h-28 w-full px-10 mb-5">
       <div className="flex items-center justify-center">
         {" "}
         <p className="text-3xl font-normal tracking-wider text-muted-foreground/75 w-full">
-          Hello {user.name}
+          Hello {user?.firstname}
         </p>
         <Image
           src={handwave}

@@ -63,7 +63,6 @@ const monthDataWithPercentage = monthData.map((item) => ({
   activity: getPercent(item.desktop, totalDesktop), // Return as number
 }));
 
-console.log(monthDataWithPercentage, "the total");
 export function ActivityAreaChart() {
   const [isDropdown, setIsDropdown] = useState(false);
   const arrowStyle = "cursor-pointer text-primary font-bold";

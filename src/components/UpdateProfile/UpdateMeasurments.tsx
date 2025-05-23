@@ -5,72 +5,64 @@ import UnitSwitch from "./UnitSwitch";
 import { Input } from "@/components/ui/input";
 import { IoScaleOutline } from "react-icons/io5";
 import { GiBodyHeight } from "react-icons/gi";
-import { useAuth } from "@/contexts/AuthenticationContext";
-import { db } from "@/config/firebase.config";
-import { doc, setDoc } from "firebase/firestore";
-import { IUserProfile } from "../anthropometricsSection/AnthropometricsView";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { useUser } from "@/contexts/UserContextProvider";
+import { updateProfile } from "@/app/action";
+import { IProfileFormData } from "@/lib/types";
 
-type Props = {};
+export default function UpdateMeasurements() {
+  const { user, profile, setProfile } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
 
-import { IFormInput } from "@/app/dashboard/settings/editprofile/page";
-export default function UpdateMeasurements(props: Props) {
-  const { user } = useAuth();
-  const [weight, setWeight] = useState<number>(user?.weight?.value || 0);
+  const [weight, setWeight] = useState<number>(profile?.weight || 0);
   const [weightUnit, setWeightUnit] = useState<"kg" | "lbs">(
-    user?.weight?.unit || "kg"
+    profile?.weight_unit || "kg"
   );
-  const [height, setHeight] = useState<number>(user?.height?.value || 0);
+  const [height, setHeight] = useState<number>(profile?.height || 0);
   const [heightUnit, setHeightUnit] = useState<"cm" | "feet">(
-    user?.height?.unit || "cm"
+    profile?.height_unit || "cm"
   );
-  const errorTextStyle = "text-red-500 text-sm font-medium mt-1";
 
   const {
-    register,
-    reset,
     setValue,
-    handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<IFormInput>({
+  } = useForm<IProfileFormData>({
     defaultValues: {
-      height: {
-        value: user?.height?.value || 0,
-        unit: user?.height?.unit || "cm",
-      },
-      weight: {
-        value: user?.weight?.value || 0,
-        unit: user?.weight?.unit || "kg",
-      },
+      height: profile?.height || 0,
+      weight: profile?.weight || 0,
+      height_unit: profile?.height_unit || "cm",
+      weight_unit: profile?.weight_unit || "kg",
     },
   });
 
   useEffect(() => {
-    if (!user.uid) return;
-    reset({
-      height: user?.height,
-      weight: user?.weight,
-    });
-  }, [reset, user]);
+    if (profile) {
+      setWeight(profile?.weight || 0);
+      setWeightUnit(profile?.height_unit || "kg");
+      setHeight(profile?.height || 0);
+      setHeightUnit(profile?.height_unit || "cm");
 
-  // Converts weight
-  const convertWeight = (weight: number, unit: "kg" | "lbs"): number => {
-    if (unit === "lbs") {
-      return parseFloat((weight * 2.20462).toFixed(1));
-    } else {
-      return parseFloat((weight / 2.20462).toFixed(1));
+      setValue("weight", profile?.weight || 0);
+      setValue("weight_unit", profile?.height_unit || "kg");
+      setValue("height", profile?.height || 0);
+      setValue("height_unit", profile?.height_unit || "cm");
     }
+  }, [profile, setValue]);
+
+  // Convert weight between units
+  const convertWeight = (weight: number, unit: "kg" | "lbs"): number => {
+    return unit === "lbs"
+      ? parseFloat((weight * 2.20462).toFixed(1))
+      : parseFloat((weight / 2.20462).toFixed(1));
   };
 
-  // Converts height
+  // Convert height between units
   const convertHeight = (height: number, unit: "cm" | "feet"): number => {
-    if (unit === "cm") {
-      return parseFloat((height * 30.48).toFixed(1));
-    } else {
-      return parseFloat((height / 30.48).toFixed(1));
-    }
+    return unit === "cm"
+      ? parseFloat((height * 30.48).toFixed(1))
+      : parseFloat((height / 30.48).toFixed(1));
   };
 
   const handleWeightToggle = (checked: boolean) => {
@@ -79,9 +71,8 @@ export default function UpdateMeasurements(props: Props) {
 
     setWeight(convertedWeight);
     setWeightUnit(newUnit);
-
-    // Sync the weight field with both value and unit
-    setValue("weight", { value: convertedWeight, unit: newUnit });
+    setValue("weight", convertedWeight);
+    setValue("weight_unit", newUnit);
   };
 
   const handleHeightToggle = (checked: boolean) => {
@@ -90,93 +81,124 @@ export default function UpdateMeasurements(props: Props) {
 
     setHeight(convertedHeight);
     setHeightUnit(newUnit);
-
-    // Sync height field with both value and unit
-    setValue("height", { value: convertedHeight, unit: newUnit });
+    setValue("height", convertedHeight);
+    setValue("height_unit", newUnit);
   };
 
-  // update the profile
-
   const handleUpdateProfile = async () => {
-    if (!user?.uid) return;
+    if (!user?.uid) {
+      toast.error("User not authenticated");
+      return;
+    }
 
-    const profileRef = doc(db, "users", user.uid);
-    const updatedData: IUserProfile = {
-      weight: { value: weight, unit: weightUnit },
-      height: { value: height, unit: heightUnit },
-    };
+    setIsLoading(true);
 
     try {
-      await setDoc(profileRef, updatedData, { merge: true });
-      toast.success("weight & height updated successfully");
+      const result = await updateProfile({
+        user_id: user.uid,
+        height: height,
+        height_unit: heightUnit,
+        weight: weight,
+        weight_unit: weightUnit,
+      });
+
+      setProfile({
+        user_id: user.uid,
+        age: profile?.age,
+        height: height,
+        height_unit: heightUnit,
+        weight: weight,
+        weight_unit: weightUnit,
+      });
+
+      if (result?.error) {
+        toast.error(result.error);
+      }
+
+      toast.success("Measurements updated successfully");
     } catch (error) {
-      toast.error("unable to update weight & height");
+      console.error("Update failed:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update measurements"
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="w-[45rem] mt-10">
       <p className="font-bold text-2xl mt-5 mb-3">Unit</p>
+
+      {/* Weight Input */}
       <div className="flex items-center py-5">
         <IoScaleOutline size={28} color="#a462af" />
         <Input
           type="number"
           placeholder="Weight"
-          value={weight}
+          value={weight || ""}
           onChange={(e) => {
             const value = parseFloat(e.target.value);
             if (!isNaN(value)) {
               setWeight(value);
-              setValue("weight", { value, unit: weightUnit });
+              setValue("weight", value);
             }
           }}
           className="mx-8"
+          step="0.1"
+          min="0"
         />
-        {errors.height && (
-          <p className={errorTextStyle}>{errors.weight?.message}</p>
+        {errors.weight && (
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.weight.message}
+          </p>
         )}
-
         <UnitSwitch
           label1="kg"
           label2="lbs"
           checked={weightUnit === "lbs"}
-          onToggleChange={(checked) => handleWeightToggle(checked)}
+          onToggleChange={handleWeightToggle}
         />
       </div>
+
+      {/* Height Input */}
       <div className="flex items-center">
         <GiBodyHeight size={28} color="#a462af" />
         <Input
           type="number"
           placeholder="Height"
-          value={height}
+          value={height || ""}
           onChange={(e) => {
             const value = parseFloat(e.target.value);
             if (!isNaN(value)) {
               setHeight(value);
-              setValue("height", { value, unit: heightUnit });
+              setValue("height", value);
             }
           }}
           className="mx-8"
+          step="0.1"
+          min="0"
         />
-
         {errors.height && (
-          <p className={errorTextStyle}>{errors.height.message}</p>
+          <p className="text-red-500 text-sm font-medium mt-1">
+            {errors.height.message}
+          </p>
         )}
-
         <UnitSwitch
           label1="cm"
           label2="feet"
           checked={heightUnit === "feet"}
-          onToggleChange={(checked) => handleHeightToggle(checked)}
+          onToggleChange={handleHeightToggle}
         />
       </div>
 
-      <button
+      <Button
         onClick={handleUpdateProfile}
-        className="mt-10 w-36 h-10  bg-teal-600/25 rounded-md shadow-sm hover:border hover:border-teal-600/80 text-sm text-muted-foreground"
+        className="mt-10 w-36 h-10 bg-highlight hover:bg-highlight/90"
+        disabled={isLoading}
       >
-        Update
-      </button>
+        {isLoading ? "Updating..." : "Update"}
+      </Button>
     </div>
   );
 }

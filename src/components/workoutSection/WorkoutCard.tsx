@@ -1,61 +1,76 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-export interface IWorkout {
-  id: string;
-  bodyPart: string;
-  equipment: string;
-  name: string;
-  gifUrl: string;
-  target: string;
-  secondaryMuscles: string[];
-  instructions: string[];
-}
+import { IWorkout } from "@/lib/types";
+import { IoIosConstruct } from "react-icons/io";
+import BlankPic from "../../assets/blank-img.jpg";
 
 type Props = {
-  id?: string;
-  bodyPart?: string;
-  equipment?: string;
-  name?: string;
-  gifUrl: string;
-  target?: string;
-  secondaryMuscles?: string[];
-  instructions?: string[];
+  workout: IWorkout;
 };
 
-const WorkoutCard = ({
-  id,
-  bodyPart,
-  equipment,
-  name,
-  gifUrl,
-  target,
-  secondaryMuscles,
-  instructions,
-}: Props) => {
+const WorkoutCard = ({ workout }: Props) => {
   const router = useRouter();
   const handleViewWorkout = () => {
-    router.push(`/dashboard/workout/${id}`);
+    router.push(`/dashboard/workout/${workout.id}`);
   };
+  const {
+    category,
+    muscles,
+    images,
+    muscles_secondary,
+    equipment,
+    translations,
+  } = workout;
   return (
     <div
-      key={id}
-      className="grid grid-row-3 gap-4 p-4 cursor-pointer"
+      key={workout.id}
+      className=" cursor-pointer relative bg-white dark:bg-muted-foreground/15 flex flex-col items-center w-full h-[24rem] rounded-md shadow-md hover:shadow-xl  transform hover:scale-120 transition duration-350 ease-in-out"
       onClick={handleViewWorkout}
     >
-      <div className=" relative bg-white  flex flex-col items-center  w-full h-[24rem]  rounded-md shadow-md hover:shadow-xl transform hover:scale-120 transition duration-350 ease-in-out">
+      <p className="absolute left-2 bottom-2 text-xs text-highlight bg-primary/10 p-2 rounded-full tracking-wider ">
+        11 min
+      </p>
+      {(images ?? []).length > 0 ? (
         <Image
-          src={gifUrl}
-          alt="workout-pic"
-          width={200}
-          height={150}
-          className="object-contain w-full h-[24rem] rounded"
+          src={images?.[0]?.image || ""}
+          alt={workout.category?.name || "Workout Image"}
+          width={100}
+          height={60}
+          className="w-full h-56 object-cover bg-muted-foreground/10 dark:bg-muted-foreground/80 rounded-t-lg"
         />
-        <div className="absolute h-[24rem]  w-full z-20 bg-muted-foreground/20 opacity-30 rounded-md"></div>
-        <div className="absolute top-2 left-3 font-bold text-sm py-2 w-52 ">
-          <p className="text-black/80 z-50 text-sm tracking-wider"> {name}</p>
-        </div>
+      ) : (
+        <Image
+          src={BlankPic}
+          width={100}
+          height={60}
+          alt="placeholder-pic"
+          className="w-full h-56 object-cover bg-muted-foreground/10 dark:bg-muted-foreground/80 rounded-t-lg"
+        />
+      )}
+
+      <div className="absolute h-[24rem]  w-full z-20 bg-muted-foreground/20 opacity-30 rounded-md"></div>
+
+      <div className="flex flex-col items-center mt-10">
+        <p className="font-bold text-2xl font-sans tracking-wider ">
+          {category?.name || "Unknown"} Challenge
+        </p>
+
+        {(equipment ?? []).length > 0 ? (
+          (equipment ?? []).map((item) => (
+            <div key={item.id} className=" mt-2">
+              <p className=" text-muted-foreground text-sm font-semibold">
+                {" "}
+                {item.name}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p className="text-muted-foreground text-sm font-semibold mt-3">
+            No equipment needed
+          </p>
+        )}
+        <p>{}</p>
       </div>
     </div>
   );
