@@ -1,12 +1,11 @@
 "use client";
 
-type Props = {};
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axiosClient from "@/app/services/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import WorkoutCard from "@/components/workoutSection/WorkoutCard";
 import { IWorkout } from "@/lib/types";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Workout() {
   const client = axiosClient();
@@ -32,19 +31,43 @@ export default function Workout() {
       !filteredWorkouts || workout.category?.name === filteredWorkouts
   );
   return (
-    <div className="grid grid-cols-3 gap-6 w-[64rem] px-5">
-      <div>
-        <button onClick={() => setFilteredWorkouts("")}>All</button>
-        <button onClick={() => setFilteredWorkouts("Abs")}>Abs</button>
-        <button onClick={() => setFilteredWorkouts("Legs")}>Legs</button>
-        <button onClick={() => setFilteredWorkouts("Arms")}>Arms</button>
-      </div>
+    <div className="flex flex-col items-center ">
+      <Tabs defaultValue="all" className="w-full max-w-2xl mb-6 ">
+        <TabsList className="w-full flex justify-between shadow-inner bg-muted-foreground/5 p-7 ">
+          <TabsTrigger value="all" onClick={() => setFilteredWorkouts("")}>
+            All
+          </TabsTrigger>
+          <TabsTrigger value="abs" onClick={() => setFilteredWorkouts("Abs")}>
+            Abs
+          </TabsTrigger>
+          <TabsTrigger value="legs" onClick={() => setFilteredWorkouts("Legs")}>
+            Legs
+          </TabsTrigger>
+          <TabsTrigger value="arms" onClick={() => setFilteredWorkouts("Arms")}>
+            Arms
+          </TabsTrigger>
+          <TabsTrigger
+            value="cardio"
+            onClick={() => setFilteredWorkouts("Cardio")}
+          >
+            Cardio
+          </TabsTrigger>
+          <TabsTrigger
+            value="shoulders"
+            onClick={() => setFilteredWorkouts("Shoulders")}
+          >
+            Shoulders
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
 
-      {handlefilteredWorkouts?.map((workout: IWorkout) => (
-        <div key={workout.id}>
-          <WorkoutCard workout={workout} />
-        </div>
-      ))}
+      <div className="grid grid-cols-2 items-center gap-y-10 gap-x-6">
+        {handlefilteredWorkouts?.map((workout: IWorkout) => (
+          <div key={workout.id}>
+            <WorkoutCard workout={workout} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

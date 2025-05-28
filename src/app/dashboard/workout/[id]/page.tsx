@@ -6,8 +6,13 @@ import { Loader } from "lucide-react";
 import { MoveLeft } from "lucide-react";
 import axiosClient from "@/app/services/axiosInstance";
 import Link from "next/link";
-import Muscles from "../../../../assets/Muscles.jpg";
 import { IWorkout } from "@/lib/types";
+import Legs from "../../../../assets/legs.jpg";
+import Arms from "../../../../assets/arms.jpg";
+import Abs from "../../../../assets/abs.jpg";
+import Cardio from "../../../../assets/cardio.jpg";
+import Shoulder from "../../../../assets/shoulders.jpg";
+import Back from "../../../../assets/back.jpg";
 
 export default function Page({ params }: { params: { id: string } }) {
   const client = axiosClient();
@@ -15,7 +20,6 @@ export default function Page({ params }: { params: { id: string } }) {
   const titleText = "text-lg font-semibold text-primary";
   const text = "ml-5 font-sans";
 
-  // Fetching individual workout
   const fetchWorkout = async (): Promise<IWorkout> => {
     const response = await client.get<IWorkout>(
       `https://wger.de/api/v2/exerciseinfo/${params.id}/`
@@ -51,53 +55,48 @@ export default function Page({ params }: { params: { id: string } }) {
     return <div>No exercise data found.</div>;
   }
   const {
-    category,
     muscles,
-    images,
+
     muscles_secondary,
     equipment,
-    variations,
+
     translations,
   } = workout;
 
-  console.log("the workout", workout.translations?.[0]);
   return (
-    <div className="h-full">
-      <div className="relative">
-        <div className="absolute top-0 bg-muted-foreground/20 dark:bg-black/20 w-full h-full z-20 opacity-60 "></div>
-        {workout && (
-          <div className="w-full flex justify-center">
-            {images?.map((image) => (
-              <Image
-                key={image.id}
-                src={image.image || ""}
-                alt={String(image.exercise) || ""}
-                width={300}
-                height={300}
-                className="object-cover"
-              />
-            ))}
-          </div>
-        )}
+    <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto">
+      <div className="relative w-full h-[30rem] rounded-md overflow-hidden">
+        <Image
+          src={
+            workout.category?.name === "Abs"
+              ? Abs
+              : workout.category?.name === "Arms"
+              ? Arms
+              : workout.category?.name === "Legs"
+              ? Legs
+              : workout.category?.name === "Cardio"
+              ? Cardio
+              : workout.category?.name === "Shoulders"
+              ? Shoulder
+              : workout.category?.name === "Back"
+              ? Back
+              : ""
+          }
+          alt={workout.category?.name || "Workout image"}
+          fill
+          className="object-cover"
+        />
 
-        <div className="p-5 flex flex-col items-center">
-          <p className="font-bold text-5xl font-sans tracking-wider ">
+        <div className="absolute inset-0 bg-black opacity-50" />
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4">
+          <p className="font-bold text-5xl font-sans tracking-wider">
             {translations?.[0].name}
-          </p>
-
-          <p className=" text-sm text-primary font-semibold tracking-wider mt-4">
-            {category?.name || "N/A"}
           </p>
         </div>
       </div>
-      <div className="flex justify-between px-4 mt-10 gap-x-10">
-        <Image
-          src={Muscles}
-          width={500}
-          height={100}
-          alt="musclesPic"
-          className="object-contain"
-        />
+
+      <div className="flex my-12 ">
         <div className="flex flex-col items-center ">
           <p className={`${titleText}`}>Target Areas: </p>
 
@@ -177,7 +176,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
           <Link
             href="/dashboard/workout"
-            className="flex bg-primary/60  py-2 rounded-full w-32  justify-center shadow-md hover:bg-primary/70 mt-5"
+            className="flex bg-primary/60  py-2  rounded-full w-32  justify-center shadow-md hover:bg-primary/70 mt-5"
           >
             <MoveLeft size={20} /> <p className="text-sm ml-2 ">Back</p>
           </Link>
