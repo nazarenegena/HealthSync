@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AuthContextProvider } from "@/contexts/AuthenticationContext";
 import { Toaster } from "sonner";
 import QueryContextProvider from "@/contexts/QueryContextProvider";
 import { UserContextProvider } from "@/contexts/UserContextProvider";
