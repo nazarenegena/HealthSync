@@ -133,10 +133,10 @@ const AnthropometricsView = () => {
   const handleAddProfile = async (
     profileData: AnthropometricUserSchemaType
   ) => {
-    if (!user?.uid) {
-      toast.error("User not authenticated");
-      return;
-    }
+    // if (!user?.uid) {
+    //   toast.error("User not authenticated");
+    //   return;
+    // }
     setLoading(true);
 
     try {
