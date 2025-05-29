@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import { use } from "react";
 
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
@@ -14,7 +15,8 @@ import Cardio from "../../../../assets/cardio.jpg";
 import Shoulder from "../../../../assets/shoulders.jpg";
 import Back from "../../../../assets/back.jpg";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const client = axiosClient();
   const divStyle = "my-2 py-5 flex flex-col items-center  w-full";
   const titleText = "text-lg font-semibold text-primary";
@@ -95,7 +97,6 @@ export default function Page({ params }: { params: { id: string } }) {
           </p>
         </div>
       </div>
-
       <div className="flex my-12 ">
         <div className="flex flex-col items-center ">
           <p className={`${titleText}`}>Target Areas: </p>

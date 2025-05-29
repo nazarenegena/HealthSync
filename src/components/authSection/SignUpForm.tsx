@@ -215,7 +215,7 @@ function SignupForm() {
         )}
 
         {/* Submit Button */}
-        <div className="mt-12">
+        {/* <div className="mt-12">
           <Button type="submit" variant={"primary"} disabled={isSubmitting}>
             {isSubmitting && loading && (
               <Loader className="animate-spin mr-6 text-white/70" />
@@ -232,7 +232,7 @@ function SignupForm() {
               Log in
             </Link>
           </div>
-        </div>
+        </div> */}
       </form>
     </div>
   );
