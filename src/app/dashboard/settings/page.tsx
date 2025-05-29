@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthenticationContext";
+import { useUser } from "@/contexts/UserContextProvider";
 import { CgProfile } from "react-icons/cg";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { GrBook } from "react-icons/gr";
@@ -19,7 +19,7 @@ export default function Page() {
     setIsOpen(false);
   };
 
-  const { user } = useAuth();
+  const { user } = useUser();
   console.log(user, "settings");
 
   return (

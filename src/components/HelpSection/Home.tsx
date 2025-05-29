@@ -3,12 +3,12 @@ import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
 
 import smileEmoji from "@/assets/smile.svg";
-import { useAuth } from "@/contexts/AuthenticationContext";
+import { useUser } from "@/contexts/UserContextProvider";
 
 type Props = {};
 
 const Home = (props: Props) => {
-  const { user } = useAuth();
+  const { user } = useUser();
   const inputStyles =
     "lg:h-10 h-8 w-72 px-2 border border-neutral text-sm text-secondary-foreground font-medium rounded-md outline-none focus:ring-primary/80 focus:border-primary/80";
 
